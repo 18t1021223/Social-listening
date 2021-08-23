@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <!-- define caching behavior -->
+    <cache:advice id="oauth2.clientById" cache-manager="redisCacheManagerJdk">
+        <cache:caching cache="oauth2.OAuthClientDetailsServiceCache">
+            <cache:cacheable method="loadClientByClientId" key="#clientId"/>
+        </cache:caching>
+    </cache:advice>
+
+    <cache:advice id="oauth2.evictClientById" cache-manager="redisCacheManagerJdk">
+        <cache:caching cache="oauth2.OAuthClientDetailsServiceCache">
+            <cache:cache-evict method="removeClientDetails" key="#clientId" before-invocation="false"/>
+        </cache:caching>
+    </cache:advice>
+
+    <cache:advice id="oauth2.authByTokenId" cache-manager="redisCacheManagerJdk">
+        <cache:caching cache="oauth2.OAuthTokenStoreReadAuthenticationCache">
+            <cache:cacheable method="readAuthentication" key="#token.toString()" />
+        </cache:caching>
+    </cache:advice>
+
+    <cache:advice id="oauth2.tokenById" cache-manager="redisCacheManagerJdk">
+        <cache:caching cache="oauth2.OAuthTokenByIdCache">
+            <cache:cacheable method="readAccessToken" key="#tokenValue" unless="#result == null"/>
+        </cache:caching>
+    </cache:advice>
+
+    <!-- apply the cacheable behavior to all interface methods -->
+    <aop:config>
+        <aop:advisor advice-ref="oauth2.clientById" pointcut="execution(* org.springframework.security.oauth2.provider.ClientDetailsService.*(..))"/>
+        <aop:advisor advice-ref="oauth2.evictClientById" pointcut="execution(* org.springframework.security.oauth2.provider.ClientRegistrationService.*(..))"/>
+        <aop:advisor advice-ref="oauth2.authByTokenId" pointcut="execution(* org.springframework.security.oauth2.provider.token.TokenStore.*(..)) "/>
+        <aop:advisor advice-ref="oauth2.tokenById" pointcut="execution(* org.springframework.security.oauth2.provider.token.TokenStore.*(..))"/>
+    </aop:config>
+</beans>

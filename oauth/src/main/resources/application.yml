@@ -1,0 +1,33 @@
+server:
+  port: 8000
+spring:
+  main:
+    web-application-type: servlet
+  application:
+    name: oauth2-service
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+  datasource:
+    url: jdbc:mariadb://localhost:3307/ex
+    username: root
+    password: 123
+    hikari:
+      connection-timeout: 1200000
+      minimum-idle: 10
+      maximum-pool-size: 50
+      pool-name: vn.com.vndcvietnam.sociallistening.manager.oauth2
+      driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    database: mysql
+    show-sql: false
+  redis:
+    cluster:
+      nodes: localhost:7000,localhost:7001,localhost:7002,localhost:7003,localhost:7004,localhost:7005
+      max-redirects: 12
