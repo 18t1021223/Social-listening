@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by Henry on 6/27/2017.
- */
 @FrameworkEndpoint
 public class CustomRevokeTokenEndpoint {
     @Resource(name = "tokenServices")
