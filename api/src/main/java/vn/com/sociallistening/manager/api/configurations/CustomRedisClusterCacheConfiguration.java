@@ -55,9 +55,9 @@ public class CustomRedisClusterCacheConfiguration {
     public CacheManager redisCacheManagerJson() {
         RedisCacheConfiguration config = RedisCacheConfiguration
                 .defaultCacheConfig()
-                .entryTtl(Duration.ofDays(30))
+                .entryTtl(Duration.ofDays(3))
                 .disableCachingNullValues()
-                .prefixCacheNameWith("vn.com.vndcvietnam.sociallistening.manager.caches.")
+                .prefixCacheNameWith("vn.com.sociallistening.manager.caches.")
                 .serializeValuesWith(RedisSerializationContext
                         .SerializationPair
                         .fromSerializer(new GenericJackson2JsonRedisSerializer()));
@@ -70,9 +70,9 @@ public class CustomRedisClusterCacheConfiguration {
     public CacheManager redisCacheManagerJdk() {
         RedisCacheConfiguration config = RedisCacheConfiguration
                 .defaultCacheConfig()
-                .entryTtl(Duration.ofDays(30))
+                .entryTtl(Duration.ofDays(3))
                 .disableCachingNullValues()
-                .prefixCacheNameWith("vn.com.vndcvietnam.sociallistening.manager.caches.")
+                .prefixCacheNameWith("vn.com.sociallistening.manager.caches.")
                 .serializeValuesWith(RedisSerializationContext
                         .SerializationPair
                         .fromSerializer(new JdkSerializationRedisSerializer()));

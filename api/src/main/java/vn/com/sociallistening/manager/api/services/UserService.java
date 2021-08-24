@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import vn.com.sociallistening.manager.api.Utils;
-import vn.com.sociallistening.manager.api.repository.mariadb.*;
 import vn.com.sociallistening.manager.api.pojos.MetaData;
 import vn.com.sociallistening.manager.api.pojos.user.CrawlProjectCreateRequest;
 import vn.com.sociallistening.manager.api.pojos.user.FacebookAccountCreateRequest;
 import vn.com.sociallistening.manager.api.pojos.user.ScenarioCreateRequest;
+import vn.com.sociallistening.manager.api.repository.mariadb.*;
 import vn.com.sociallistening.manager.entity.mariadb.CrawlProject;
 import vn.com.sociallistening.manager.entity.mariadb.FacebookAccount;
 import vn.com.sociallistening.manager.entity.mariadb.Profile;
@@ -40,19 +40,21 @@ public class UserService implements Serializable {
     private final ScenarioRepository scenarioRepository;
     private final CrawlProjectRepository crawlProjectRepository;
 
-    private final CacheService cacheService;
-
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
-    public UserService(ProfileRepository profileRepository, RoleRepository roleRepository, FacebookAccountRepository facebookAccountRepository, ScenarioRepository scenarioRepository, CrawlProjectRepository crawlProjectRepository, CacheService cacheService, KafkaTemplate<String, String> kafkaTemplate) {
+    public UserService(ProfileRepository profileRepository,
+                       RoleRepository roleRepository,
+                       FacebookAccountRepository facebookAccountRepository,
+                       ScenarioRepository scenarioRepository,
+                       CrawlProjectRepository crawlProjectRepository,
+                       KafkaTemplate<String, String> kafkaTemplate) {
         this.profileRepository = profileRepository;
         this.roleRepository = roleRepository;
         this.facebookAccountRepository = facebookAccountRepository;
         this.scenarioRepository = scenarioRepository;
         this.crawlProjectRepository = crawlProjectRepository;
-        this.cacheService = cacheService;
         this.kafkaTemplate = kafkaTemplate;
     }
 
@@ -103,6 +105,7 @@ public class UserService implements Serializable {
         return map;
     }
 
+    @CacheEvict(cacheNames = "user_service.getFacebookAccounts", allEntries = true)
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.SERIALIZABLE)
     public void createFacebookAccount(FacebookAccountCreateRequest request) throws Exception {
         FacebookAccount facebookAccount = new FacebookAccount();
@@ -111,9 +114,6 @@ public class UserService implements Serializable {
         facebookAccount.setAvailable(true);
         facebookAccount.setLocked(false);
         facebookAccountRepository.save(facebookAccount);
-        cacheService.evict(
-                "user_service.getFacebookAccounts",
-                "user_service.getFacebookAccounts:*");
     }
     //endregion
 
@@ -142,6 +142,7 @@ public class UserService implements Serializable {
         return scenarioRepository.findById(id).orElse(null);
     }
 
+    @CacheEvict(cacheNames = "user_service.getScenarios", key = "#p0.toString()")
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.SERIALIZABLE)
     public void createScenario(ScenarioCreateRequest request) throws Exception {
         Scenario scenario = new Scenario();
@@ -150,9 +151,6 @@ public class UserService implements Serializable {
         scenario.setEnabled(request.isEnabled());
         scenario.setScript(request.getScript().trim());
         scenarioRepository.save(scenario);
-        cacheService.evict(
-                "user_service.getScenarios",
-                "user_service.getScenarios:*");
     }
 
     @CacheEvict(cacheNames = "user_service.getScenario", key = "#p0.toString()")
@@ -163,9 +161,6 @@ public class UserService implements Serializable {
             scenario.setEnabled(request.isEnabled());
             scenario.setScript(request.getScript().trim());
             scenarioRepository.save(scenario);
-            cacheService.evict(
-                    "user_service.getScenarios",
-                    "user_service.getScenarios:*");
         }
     }
     //endregion
@@ -190,6 +185,7 @@ public class UserService implements Serializable {
         return map;
     }
 
+    @CacheEvict(cacheNames = "user_service.getCrawlProjects", allEntries = true)
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.SERIALIZABLE)
     public void createCrawlProject(CrawlProjectCreateRequest request) throws Exception {
         CrawlProject crawlProject = new CrawlProject();
@@ -198,11 +194,9 @@ public class UserService implements Serializable {
         crawlProject.setInQueue(false);
         crawlProject.setStatus(CrawlProject.STATUS_PENDING);
         crawlProjectRepository.save(crawlProject);
-        cacheService.evict(
-                "user_service.getCrawlProjects",
-                "user_service.getCrawlProjects:*");
     }
 
+    @CacheEvict(cacheNames = "user_service.getCrawlProjects", allEntries = true)
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.SERIALIZABLE)
     public void putCrawlProjectInToQueue(long id) throws Exception {
         CrawlProject crawlProject = crawlProjectRepository.findById(id).orElse(null);
@@ -217,10 +211,7 @@ public class UserService implements Serializable {
         crawlProject.setInQueue(true);
         crawlProject.setStatus(CrawlProject.STATUS_PENDING);
         crawlProjectRepository.save(crawlProject);
-        cacheService.evict(
-                "user_service.getCrawlProjects",
-                "user_service.getCrawlProjects:*");
-        kafkaTemplate.send("vn.com.vndcvietnam.sociallistening.topics.crawl_project", mapper.writeValueAsString(crawlProject));
+        kafkaTemplate.send("vn.com.sociallistening.topics.crawl_project", mapper.writeValueAsString(crawlProject));
     }
     //endregion
 }
