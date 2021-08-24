@@ -56,7 +56,7 @@ public class CustomAuthorizationServerConfiguration extends AuthorizationServerC
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         final JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("vn.com.vndcvietnam.sociallistening.manager");
+        converter.setSigningKey("vn.com.sociallistening.manager");
         return converter;
     }
 
