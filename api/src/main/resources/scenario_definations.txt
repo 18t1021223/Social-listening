@@ -1,0 +1,523 @@
+
+SCENARIO GET USER INFORMATION FACEBOOK IN DATABASE
+
+[{
+        "action": "load_page",
+        "xpath": null,
+        "attribute": null,
+        "value": "https://mbasic.facebook.com",
+        "fieldName": null
+    }, {
+        "action": "set",
+        "xpath": "//INPUT[@name='email']",
+        "attribute": null,
+        "value": "taikhoan",
+        "fieldName": null
+    }, {
+        "action": "set",
+        "xpath": "//INPUT[@name='pass']",
+        "attribute": null,
+        "value": "matkhau",
+        "fieldName": null
+    }, {
+        "action": "click",
+        "xpath": "//INPUT[@name='login']",
+        "attribute": null,
+        "value": null,
+        "fieldName": null
+    }, {
+        "action": "click",
+        "xpath": "//A[1]",
+        "attribute": null,
+        "value": null,
+        "fieldName": null
+    }, {
+        "action": "goto_page",
+        "xpath": null,
+        "attribute": null,
+        "value": "https://mbasic.facebook.com/alone.2104",
+        "fieldName": null
+    }, {
+        "action": "declare_single_object"
+    }, {
+        "action": "declare_list_object"
+    }, {
+        "action": "get",
+        "xpath": "//a[text()='Block this person' or text()='Block This Person']",
+        "attribute": "href",
+        "fieldName": "facebookId"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']/div/div[1]//img[contains(@alt,'profile picture')]",
+        "attribute": "src",
+        "fieldName": "avatarImage"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "src",
+        "fieldName": "coverImage",
+        "child_xpath": ".//div[@id='profile_cover_photo_container']/a/img"
+    }, {
+        "action": "get",
+        "xpath": "//a[text()='Timeline']",
+        "attribute": "href",
+        "fieldName": "facebookUrl"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']//strong",
+        "attribute": "text",
+        "value": null,
+        "fieldName": "name"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "maritalStatus",
+        "child_xpath": ".//div[@id='relationship']/div/div"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "otherNames",
+        "list_child_xpath": ".//div[@id='nicknames']/div/div/div"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "lifeEvents",
+        "list_child_xpath": ".//div[@id='year-overviews']//div[number(text())>0]/parent::div"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "birthDay",
+        "child_xpath": ".//div[@id='basic-info']//span[text()='Birthday']//ancestor::tr[1]/td[2]"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "gender",
+        "child_xpath": ".//div[@id='basic-info']//span[text()='Gender']//ancestor::tr[1]/td[2]"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "interestedIn",
+        "child_xpath": ".//div[@id='basic-info']//span[text()='Interested In']//ancestor::tr[1]/td[2]"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "languages",
+        "child_xpath": ".//div[@id='basic-info']//span[text()='Languages']//ancestor::tr[1]/td[2]"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "href",
+        "fieldName": "religiousViews",
+        "child_xpath": ".//div[@id='basic-info']//span[text()='Religious Views']//ancestor::tr[1]/td[2]//a"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "href",
+        "fieldName": "politicalViews",
+        "child_xpath": ".//div[@id='basic-info']//span[text()='Political Views']//ancestor::tr[1]/td[2]//a"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "placesLived",
+        "list_child_xpath": ".//div[@id='living']/div/div/div"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "about",
+        "child_xpath": ".//div[@id='bio']/div/div/div"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "quote",
+        "child_xpath": ".//div[@id='quote']/div/div/div"
+    }, {
+        "action": "add_to_map_object",
+        "type": "profile"
+    }, {
+        "action": "declare_single_object"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "socialLinks",
+        "list_child_xpath": ".//div[@id='contact-info']/div/div//td[1]//span[text()!='Email' and text()!='Mobile' and text()!='Address']//ancestor::tr"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "email",
+        "child_xpath": ".//div[@id='contact-info']/div/div//td[1]//span[text()='Email']//ancestor::tr/td[2]"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "phone",
+        "child_xpath": ".//div[@id='contact-info']/div/div//td[1]//span[text()='Mobile']//ancestor::tr/td[2]"
+    }, {
+        "action": "get",
+        "xpath": "//div[@id='root']",
+        "attribute": "text",
+        "fieldName": "address",
+        "child_xpath": ".//div[@id='contact-info']/div/div//td[1]//span[text()='Address']//ancestor::tr/td[2]"
+    }, {
+        "action": "add_to_map_object",
+        "type": "contact_info_profile"
+    }, {
+        "action": "declare_single_object"
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='root']//div[@id='family']//header//a",
+        "attribute": "text",
+        "fieldName": "name",
+        "ignore_exception": true
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='root']//div[@id='family']//header//a",
+        "attribute": "href",
+        "fieldName": "facebookUrl",
+        "ignore_exception": true
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='root']//div[@id='family']//header/h3[2]",
+        "attribute": "text",
+        "fieldName": "relation",
+        "ignore_exception": true
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='root']//div[@id='family']//a/img",
+        "attribute": "src",
+        "fieldName": "avatar",
+        "ignore_exception": true
+    }, {
+        "action": "add_to_map_object",
+        "type": "family"
+    }, {
+        "action": "declare_single_object"
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='education']/div/div/div//img",
+        "attribute": "href",
+        "fieldName": "avatarImage",
+        "ignore_exception": true
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='education']/div/div/div//a/following-sibling::div[1]/div[1]//span",
+        "attribute": "text",
+        "fieldName": "name",
+        "ignore_exception": true
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='education']/div/div/div//a/following-sibling::div[1]",
+        "attribute": "text",
+        "fieldName": "info",
+        "ignore_exception": true
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='education']/div/div/div//img/parent::a",
+        "attribute": "href",
+        "fieldName": "facebookUrl",
+        "ignore_exception": true
+    }, {
+        "action": "add_to_map_object",
+        "type": "education"
+    }, {
+        "action": "declare_single_object"
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='work']/div/div/div//img",
+        "attribute": "href",
+        "fieldName": "avatarImage",
+        "ignore_exception": true
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='work']/div/div/div//a/following-sibling::div[1]/div[1]//span",
+        "attribute": "text",
+        "fieldName": "name",
+        "ignore_exception": true
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='work']/div/div/div//a/following-sibling::div[1]",
+        "attribute": "text",
+        "fieldName": "info",
+        "ignore_exception": true
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='work']/div/div/div//img/parent::a",
+        "attribute": "href",
+        "fieldName": "facebookUrl",
+        "ignore_exception": true
+    }, {
+        "action": "add_to_map_object",
+        "type": "work"
+    }, {
+        "action": "declare_single_object"
+    }, {
+        "action": "goto_page",
+        "value": "https://mbasic.facebook.com/alone.2104"
+    }, {
+        "action": "click",
+        "xpath": "//div[@id='root']//a[text()='Friends']",
+        "ignore_exception":true
+    }, {
+        "action": "begin_limited_loop",
+        "xpath":"//h3[contains(text(),'Friends')]/following-sibling::div[1]//tr",
+        "next_page_element_xpath": "//div[contains(@id,'m_more_')]/a",
+        "next_page_action": "click",
+        "value": "5"
+    }, {
+        "action": "get_list",
+        "xpath": "//h3[contains(text(),'Friends')]/following-sibling::div[1]//tr",
+        "attribute": "text",
+        "fieldName": "name",
+        "child_xpath": "./td[2]/a"
+    }, {
+        "action": "get_list",
+        "xpath": "//h3[contains(text(),'Friends')]/following-sibling::div[1]//tr",
+        "attribute": "href",
+        "fieldName": "facebookUrl",
+        "child_xpath": "./td[2]/a"
+    }, {
+        "action": "get_list",
+        "xpath": "//h3[contains(text(),'Friends')]/following-sibling::div[1]//tr",
+        "attribute": "href",
+        "fieldName": "facebookId",
+        "child_xpath": "./td[2]/div[2]/a"
+    }, {
+        "action": "add_to_map_object",
+        "type": "friend"
+    }, {
+        "action": "end_loop"
+    }, {
+        "action": "declare_single_object"
+    }, {
+        "action": "goto_page",
+        "value": "https://mbasic.facebook.com/alone.2104"
+    }, {
+        "action": "click",
+        "xpath": "//div[@id='root']//a[text()='Likes']",
+        "ignore_exception":true
+    }, {
+        "action": "begin_unlimited_loop",
+        "xpath": "//div[@id='root']/div[1]/div[position()!=1]/div/div",
+        "next_page_element_xpath": "//div[@id='root']/div[1]/div[last()]//div[@id='m_more_item']/a",
+        "next_page_action": "click"
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='root']/div[1]/div[1]/following-sibling::div//div/div/a[1]/span",
+        "attribute": "text",
+        "fieldName": "name"
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='root']/div[1]/div[1]/following-sibling::div//div/div/a[1]",
+        "attribute": "href",
+        "fieldName": "facebookUrl"
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='root']/div[1]/div[1]/following-sibling::div//img",
+        "attribute": "src",
+        "fieldName": "avatar"
+    }, {
+        "action": "get_list",
+        "xpath": "//div[@id='root']/div[1]/div[1]/following-sibling::div/div/div",
+        "attribute": "href",
+        "fieldName": "facebookId",
+        "child_xpath": ".//a[2]"
+    }, {
+        "action": "add_to_map_object",
+        "type": "likes"
+    }, {
+        "action": "declare_single_object"
+    }, {
+        "action": "end_loop"
+    }, {
+        "action": "goto_page",
+        "value": "https://m.facebook.com/alone.2104"
+    },{
+        "action":"click",
+        "xpath":"//a[@role='button' and text()='Okay']",
+        "ignore_exception" : true
+    },{
+        "action":"begin_limited_loop",
+        "next_page_element_xpath": "//body",
+        "next_page_action": "none",
+        "value":"5"
+    },{
+         "action":"scroll_down",
+         "xpath":"//body"
+    },{
+        "action":"sleep",
+		"value":"100"
+	},{
+        "action":"scroll_down",
+        "xpath":"//body"
+    },{
+        "action":"end_loop"
+	},{
+        "action":"get_list",
+        "xpath":"//article/div/header/div/div[1]//a/parent::div[starts-with(@data-sigil,'feed_story')]",
+        "attribute":"data-sigil",
+        "fieldName":"feedOwnerFacebookId"
+    },{
+		"action":"get_list",
+		"xpath":"//article/div/header//strong[1]//a",
+        "attribute":"href",
+        "fieldName":"facebookUrl"
+	},{
+		"action":"get_list",
+		"xpath":"//article[./footer]",
+		"attribute":"text",
+		"fieldName":"likeCount",
+		"child_xpath":".//div[contains(@aria-label,'left reactions including')]",
+        "ignore_exception":true
+	},{
+		"action":"get_list",
+		"xpath":"//article[./footer]",
+		"attribute":"text",
+		"fieldName":"commentCount",
+		"child_xpath":".//span[contains(text(),'Comment')]",
+        "ignore_exception":true
+	},{
+		"action":"get_list",
+		"xpath":"//article/footer",
+		"attribute":"text",
+		"fieldName":"shareCount",
+		"child_xpath":".//span[contains(text(),'Share')]",
+		"ignore_exception":true
+	},{
+		"action":"get_list",
+		"xpath":"//article[./footer]",
+		"attribute":"href",
+		"fieldName":"feedUrl",
+		"child_xpath":".//div[@data-sigil='reactions-sentence-container']//ancestor::a[1]"
+	},{
+		"action":"get_list",
+		"xpath":"//article/div[@class='story_body_container']",
+		"attribute":"text",
+		"fieldName":"content",
+		"child_xpath":"./div[1]//div[1]/span[1]",
+		"ignore_exception":true
+	},{
+		"action":"get_list",
+		"xpath":"//article/div[@class='story_body_container']",
+		"attribute":"text",
+		"fieldName":"postDate",
+		"child_xpath":"./header//div[@data-sigil='m-feed-voice-subtitle']//a/abbr",
+		"ignore_exception":true
+	},{
+		"action":"get_list",
+		"xpath":"//article/footer",
+		"attribute":"data-click",
+		"child_xpath":".//a[text()='Share' or text()='Comment']",
+		"fieldName":"postId"
+	},{
+		"action":"add_to_map_object",
+		"type":"post_profile"
+	},{
+		"action":"declare_single_object"
+	},{
+		"action":"begin_click_list",
+		"xpath":"//article/footer",
+		"child_xpath":".//span[contains(text(),'Comment')]//ancestor::a[1]",
+		"attribute":"href"
+	},{
+		"action": "begin_unlimited_loop",
+		"next_page_element_xpath": "//div[(starts-with(@id,'see_next') or starts-with(@id,'see_pre')) and not(starts-with(@class,'async_elem_preprocess async_elem'))]",
+		"next_page_action": "click"
+	},{
+		"action":"end_loop"
+	},{
+		"action": "begin_unlimited_loop",
+		"next_page_element_xpath": "//a[text()='View previous replies' or text()='View next replies' or @data-sigil='ajaxify' and not(./div[starts-with(@data-sigil,'m-loading-indicator-animate m-loading-indicator-root')])]",
+		"next_page_action": "click"
+	},{
+		"action":"sleep",
+		"value":"100"
+	},{
+		"action":"end_loop"
+	},{
+		"action":"get_list",
+		"xpath":"//div[@data-sigil='comment' or @data-sigil='comment inline-reply']",
+		"attribute":"text",
+		"fieldName":"commentDate",
+		"child_xpath":".//div[@data-sigil='ufi-inline-comment-actions']/abbr",
+		"ignore_exception" : true
+	},{
+		"action":"get_list",
+		"xpath":"//div[@data-sigil='comment' or @data-sigil='comment inline-reply']",
+		"attribute":"text",
+		"fieldName":"likeCount",
+		"child_xpath":".//a/span[last()]",
+        "ignore_exception" : true
+	},{
+		"action":"get_list",
+		"xpath":"//div[@data-sigil='comment' or @data-sigil='comment inline-reply']",
+		"attribute":"text",
+		"fieldName":"contentText",
+		"child_xpath":".//div[@data-sigil='comment-body' and position() =2 ]",
+		"ignore_exception" : true
+	},{
+		"action":"get_list",
+		"xpath":"//div[@data-sigil='comment' or @data-sigil='comment inline-reply']",
+		"attribute":"style",
+		"fieldName":"contentImage",
+		"child_xpath":".//i[string-length(@style)>0 and substring(@aria-label, string-length(@aria-label)-string-length('picture') + 1)  != 'picture']",
+		"ignore_exception" : true
+	},{
+		"action":"get_list",
+		"xpath":"//div[@data-sigil='comment' or @data-sigil='comment inline-reply']",
+		"attribute":"aria-label",
+		"fieldName":"contentTextImage",
+		"child_xpath":".//i[@role='img' and starts-with(@aria-label,'May be')]",
+		"ignore_exception" : true
+	},{
+		"action":"get_list",
+		"xpath":"//div[@data-sigil='comment' or @data-sigil='comment inline-reply']",
+		"attribute":"id",
+		"fieldName":"commentId",
+		"ignore_exception" : true
+	},{
+		"action":"get_list",
+		"xpath":"//div[@data-sigil='comment' or @data-sigil='comment inline-reply']",
+		"attribute":"data-uri",
+		"fieldName":"parentCommentId",
+		"child_xpath":".//div[@data-sigil='ufi-inline-comment-actions']/a[text()='Like']",
+		"ignore_exception" : true
+	},{
+		"action":"get_list",
+		"xpath":"//div[@data-sigil='comment' or @data-sigil='comment inline-reply']//div[starts-with(@data-sigil,'feed_story')]//a",
+		"attribute":"href",
+		"fieldName":"facebookOwnerUrl",
+		"ignore_exception" : false
+	},{
+		"action":"get_list",
+		"xpath":"//div[@data-sigil='comment' or @data-sigil='comment inline-reply']/div[starts-with(@data-sigil,'feed_story_ring')]",
+		"attribute":"data-sigil",
+		"fieldName":"facebookOwnerId"
+	},{
+		"action":"get",
+		"xpath":"//div[@data-sigil='ufi-inline-actions']//a[text()='Share' or text()='Comment']",
+		"attribute":"data-click",
+		"fieldName":"postId"
+	},{
+		"action": "add_to_map_object",
+		"type":"comment_profile"
+	},{
+		"action": "declare_single_object"
+	},{
+		"action":"end_click_list"
+	}, {
+        "action": "convert_object",
+        "type": "facebook",
+		"value":"profile"
+    }
+]
