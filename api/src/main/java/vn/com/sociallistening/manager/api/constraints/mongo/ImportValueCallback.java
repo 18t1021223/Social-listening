@@ -1,4 +1,4 @@
-package vn.com.sociallistening.manager.api.constraints;
+package vn.com.sociallistening.manager.api.constraints.mongo;
 
 
 import lombok.RequiredArgsConstructor;
