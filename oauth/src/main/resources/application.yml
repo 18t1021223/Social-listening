@@ -16,7 +16,7 @@ spring:
       connection-timeout: 1200000
       minimum-idle: 10
       maximum-pool-size: 50
-      pool-name: vn.com.vndcvietnam.sociallistening.manager.oauth2
+      pool-name: vn.com.sociallistening.manager.oauth2
       driver-class-name: org.mariadb.jdbc.Driver
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
