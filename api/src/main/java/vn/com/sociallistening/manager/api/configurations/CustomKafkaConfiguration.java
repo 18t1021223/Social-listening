@@ -51,7 +51,7 @@ public class CustomKafkaConfiguration {
 
     @Bean
     public NewTopic crawlProjectTopic() {
-        return new NewTopic("vn.com.vndcvietnam.sociallistening.topics.crawl_project", 1, (short) 1);
+        return new NewTopic("vn.com.sociallistening.topics.crawl_project", 1, (short) 1);
     }
 
     /* start Consumer config */
