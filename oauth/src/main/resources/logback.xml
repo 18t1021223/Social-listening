@@ -25,7 +25,7 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="ROLLING-FILE"/>
     </logger>
-    <logger name="vn.com.vndcvietnam.sociallistening.manager.oauth2" level="DEBUG">
+    <logger name="vn.com.sociallistening.manager.oauth" level="DEBUG">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="ROLLING-FILE"/>
     </logger>
