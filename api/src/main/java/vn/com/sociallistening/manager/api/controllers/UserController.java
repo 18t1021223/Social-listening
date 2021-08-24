@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/user")
-@PreAuthorize("customHasAuthority('vn.com.vndcvietnam.sociallistening.manager.roles.user')")
+@PreAuthorize("customHasAuthority('vn.com.sociallistening.manager.roles.user')")
 @Slf4j
 public class UserController {
     @Autowired
@@ -311,7 +311,7 @@ public class UserController {
 
     @PostMapping(value = "/crawl-projects")
     @ResponseBody
-    public ResponseEntity<?> createCrawlProject(@Validated @RequestBody CrawlProjectCreateRequest request, BindingResult result) {
+    public ResponseEntity<?> createCrawlProject(@Validated CrawlProjectCreateRequest request, BindingResult result) {
         if (log.isDebugEnabled())
             log.debug("createCrawlProject - Request received:\r\n{}", request.toString());
 
