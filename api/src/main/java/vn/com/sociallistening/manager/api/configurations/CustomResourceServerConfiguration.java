@@ -15,9 +15,6 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-/**
- * Created by Henry on 7/6/2017.
- */
 @Configuration
 @EnableResourceServer
 public class CustomResourceServerConfiguration extends ResourceServerConfigurerAdapter {
@@ -39,7 +36,7 @@ public class CustomResourceServerConfiguration extends ResourceServerConfigurerA
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("vn.com.vndcvietnam.sociallistening.manager");
+        converter.setSigningKey("vn.com.sociallistening.manager");
         return converter;
     }
 
@@ -54,7 +51,6 @@ public class CustomResourceServerConfiguration extends ResourceServerConfigurerA
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        //super.configure(http);
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
