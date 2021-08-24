@@ -2,11 +2,10 @@ package vn.com.sociallistening.manager.api.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,22 +18,15 @@ import vn.com.sociallistening.manager.api.services.GuestService;
 @RequestMapping(value = "/guest")
 @Slf4j
 public class GuestController {
-    private final GuestService service;
-    private final Validator validator;
-
     @Autowired
-    public GuestController(GuestService service, @Qualifier("mvcValidator") Validator validator) {
-        this.service = service;
-        this.validator = validator;
-    }
+    private GuestService service;
 
     @PostMapping(value = "/login")
     @ResponseBody
-    public ResponseEntity<?> login(LoginRequest request, BindingResult result) {
+    public ResponseEntity<?> login(@Validated LoginRequest request, BindingResult result) {
         if (log.isDebugEnabled())
             log.debug("login - Request received:\r\n{}", request.toString());
 
-        validator.validate(request, result);
         if (result.hasErrors()) {
             log.warn("login - Some mandatory parameters is invalid.");
             return ResponseEntity
