@@ -16,16 +16,11 @@
         </rollingPolicy>
     </appender>
 
-    <!--<root level="ERROR">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="ROLLING-FILE"/>
-    </root>-->
-
     <logger name="org.springframework" level="ERROR">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="ROLLING-FILE"/>
     </logger>
-    <logger name="vn.com.vndcvietnam.sociallistening.manager.api" level="DEBUG">
+    <logger name="vn.com.sociallistening.manager.api" level="DEBUG">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="ROLLING-FILE"/>
     </logger>
