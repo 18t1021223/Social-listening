@@ -3,6 +3,7 @@ package vn.com.sociallistening.manager.api.pojos.social;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import vn.com.sociallistening.manager.api.Utils;
 import vn.com.sociallistening.manager.api.services.*;
 import vn.com.sociallistening.manager.entity.mongodb.*;
 
@@ -93,8 +94,7 @@ public class Facebook implements SocialNetwork {
 
                         listTemp = (List<String>) map.get("facebookOwnerId");
                         if (listTemp != null) {
-                            listTemp.replaceAll(value ->
-                                    value.substring(value.indexOf("feed_story_ring") + "feed_story_ring".length()));
+                            listTemp.replaceAll(value -> value.substring(value.indexOf("feed_story_ring") + "feed_story_ring".length()));
                             map.put("facebookOwnerId", listTemp);
                         }
 
@@ -113,8 +113,7 @@ public class Facebook implements SocialNetwork {
 
                         listTemp = (List<String>) map.get("commentDate");
                         if (listTemp != null) {
-                            listTemp.replaceAll(value ->
-                                    value == null ? null : Utils.handlePostDate(value)
+                            listTemp.replaceAll(value -> value == null ? null : Utils.handlePostDate(value)
                             );
                             map.put("commentDate", listTemp);
                         }
@@ -136,23 +135,17 @@ public class Facebook implements SocialNetwork {
                     case Members.MEMBER_GROUP: {
                         listTemp = (List<String>) map.get("facebookId");
                         if (listTemp != null) {
-                            listTemp.replaceAll((value) -> value == null ?
-                                    null :
-                                    value.substring(value.indexOf("?id=") + 4, value.indexOf("&hf")));
+                            listTemp.replaceAll((value) -> value == null ? null : value.substring(value.indexOf("?id=") + 4, value.indexOf("&hf")));
                             map.put("facebookId", listTemp);
                         }
                         listTemp = (List<String>) map.get("memberId");
                         if (listTemp != null) {
-                            listTemp.replaceAll((value) -> value == null ?
-                                    null :
-                                    value.substring(value.lastIndexOf('_') + 1));
+                            listTemp.replaceAll((value) -> value == null ? null : value.substring(value.lastIndexOf('_') + 1));
                             map.put("memberId", listTemp);
                         }
                         listTemp = (List<String>) map.get("joinDate");
                         if (listTemp != null) {
-                            listTemp.replaceAll(value ->
-                                    value == null ? null : Utils.handlePostDate(value)
-                            );
+                            listTemp.replaceAll(value -> value == null ? null : Utils.handlePostDate(value));
                             map.put("joinDate", listTemp);
                         }
                         converted.add(membersService.objectToEntity(map));
@@ -169,14 +162,12 @@ public class Facebook implements SocialNetwork {
                         }
                         listTemp = (List<String>) map.get("commentCount");
                         if (listTemp != null) {
-                            listTemp.replaceAll((value) -> value == null ?
-                                    null : value.substring(0, value.indexOf(" ")));
+                            listTemp.replaceAll((value) -> value == null ? null : value.substring(0, value.indexOf(" ")));
                             map.put("commentCount", listTemp);
                         }
                         listTemp = (List<String>) map.get("shareCount");
                         if (listTemp != null) {
-                            listTemp.replaceAll((value) -> value == null ?
-                                    null : value.substring(0, value.indexOf(" ")));
+                            listTemp.replaceAll((value) -> value == null ? null : value.substring(0, value.indexOf(" ")));
                             map.put("shareCount", listTemp);
                         }
                         listTemp = (List<String>) map.get("postId");
@@ -191,9 +182,7 @@ public class Facebook implements SocialNetwork {
                         }
                         listTemp = (List<String>) map.get("postDate");
                         if (listTemp != null) {
-                            listTemp.replaceAll(value ->
-                                    value == null ? null : Utils.handlePostDate(value)
-                            );
+                            listTemp.replaceAll(value -> value == null ? null : Utils.handlePostDate(value));
                             map.put("postDate", listTemp);
                         }
                         converted.add(postService.objectToEntity(map));
@@ -208,8 +197,7 @@ public class Facebook implements SocialNetwork {
                     case Likes.LIKES: {
                         listTemp = (List<String>) map.get("facebookId");
                         if (listTemp != null) {
-                            listTemp.replaceAll((value) -> value == null ?
-                                    null : value.substring(value.indexOf("&id=") + 4, value.indexOf("&origin")));
+                            listTemp.replaceAll((value) -> value == null ? null : value.substring(value.indexOf("&id=") + 4, value.indexOf("&origin")));
                             map.put("facebookId", listTemp);
                         }
                         converted.add(likesService.objectToEntity(map));
@@ -219,8 +207,7 @@ public class Facebook implements SocialNetwork {
                     case Friend.FRIEND: {
                         listTemp = (List<String>) map.get("facebookId");
                         if (listTemp != null) {
-                            listTemp.replaceAll((value) -> value == null ?
-                                    null : value.substring(value.indexOf("?id=") + 4, value.indexOf("&hf")));
+                            listTemp.replaceAll((value) -> value == null ? null : value.substring(value.indexOf("?id=") + 4, value.indexOf("&hf")));
                             map.put("facebookId", listTemp);
                         }
                         converted.add(friendService.objectToEntity(map));
@@ -229,8 +216,7 @@ public class Facebook implements SocialNetwork {
 
                     case Profile.PROFILE: {
                         stringTemp = (String) map.get("facebookId");
-                        stringTemp = stringTemp == null ?
-                                null : stringTemp.substring(stringTemp.indexOf("?bid=") + 5, stringTemp.indexOf("&ret"));
+                        stringTemp = stringTemp == null ? null : stringTemp.substring(stringTemp.indexOf("?bid=") + 5, stringTemp.indexOf("&ret"));
                         map.put("facebookId", stringTemp);
 
                         stringTemp = (String) map.get("facebookUrl");
@@ -259,7 +245,6 @@ public class Facebook implements SocialNetwork {
                             map.put("placesLived", listTemp.stream().map(value -> value.split("\n", 2))
                                     .map(value -> value[0] + ": " + value[1])
                                     .collect(Collectors.toList()));
-
                         converted.add(profileService.ObjectToEntity(map));
                         break;
                     }
@@ -306,22 +291,19 @@ public class Facebook implements SocialNetwork {
     public void saveCrawlProfile(List<Object> converted, String typeConvert) {
         switch (typeConvert.toLowerCase()) {
             case Fanpage.FANPAGE: {
-                Fanpage fanpage = Optional.ofNullable(fanpageService.mapper(converted))
-                        .orElseThrow(NullPointerException::new);
+                Fanpage fanpage = Optional.ofNullable(fanpageService.mapper(converted)).orElseThrow(NullPointerException::new);
                 fanpageService.save(fanpage);
                 break;
             }
 
             case Profile.PROFILE: {
-                Profile profile = Optional.ofNullable(profileService.mapper(converted))
-                        .orElseThrow(NullPointerException::new);
+                Profile profile = Optional.ofNullable(profileService.mapper(converted)).orElseThrow(NullPointerException::new);
                 profileService.save(profile);
                 break;
             }
 
             case Group.GROUP: {
-                Group group = Optional.ofNullable(groupService.mapper(converted))
-                        .orElseThrow(NullPointerException::new);
+                Group group = Optional.ofNullable(groupService.mapper(converted)).orElseThrow(NullPointerException::new);
                 groupService.save(group);
                 break;
             }
