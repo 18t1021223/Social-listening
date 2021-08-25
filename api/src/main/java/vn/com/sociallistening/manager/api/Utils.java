@@ -78,4 +78,11 @@ public class Utils {
         String plain = dec.movePointRight(precision).toPlainString();
         return new BigDecimal(plain.substring(0, plain.indexOf("."))).movePointLeft(precision);
     }
+
+    public static Object getValue(Object data, int index) {
+        if (data == null) return null;
+        if (data instanceof List)
+            return ((List<?>) data).get(index);
+        return null;
+    }
 }
