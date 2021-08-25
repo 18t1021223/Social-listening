@@ -8,6 +8,12 @@ import vn.com.sociallistening.manager.api.pojos.MetaData;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Utils {
@@ -84,5 +90,133 @@ public class Utils {
         if (data instanceof List)
             return ((List<?>) data).get(index);
         return null;
+    }
+
+    /**
+     * facebook maybe error
+     *
+     * @param dateInString
+     * @return
+     */
+    public static String handlePostDate(String dateInString) {
+        DateTimeFormatter formatter;
+        LocalDateTime dateTime;
+        LocalDate date;
+        //about 3 weeks ago
+        //about an hour ago
+        //about a month ago
+        if (dateInString.startsWith("about ")) {
+            dateInString = dateInString.substring(dateInString.indexOf(' ') + 1);
+            if (dateInString.startsWith("a ") || dateInString.startsWith("an "))
+                dateInString = "1 " + dateInString.substring(dateInString.indexOf(' ') + 1);
+        }
+
+        if (dateInString.contains(",")) {
+            if (dateInString.contains(" at ")) {
+                // October 22, 2019 at 4:20 PM
+                dateInString = dateInString.replace(" at ", " ");
+                formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy h:mm a", Locale.ENGLISH);
+                dateTime = LocalDateTime.parse(dateInString, formatter);
+                dateInString = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Timestamp.valueOf(dateTime));
+            } else {
+                //March 18, 2012
+                formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
+                date = LocalDate.parse(dateInString, formatter);
+                dateInString = new SimpleDateFormat("yyyy-MM-dd 00:00").format(java.sql.Date.valueOf(date));
+            }
+
+        } else if (dateInString.contains(" at ")) {
+            //Yesterday at 1:00 PM
+            if (dateInString.contains("Yesterday")) {
+                formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a", Locale.ENGLISH);
+                date = LocalDate.now().minusDays(1);
+                dateTime = LocalDateTime.parse(date + dateInString.substring(dateInString.indexOf("at") + 2),
+                        formatter);
+                dateInString = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Timestamp.valueOf(dateTime));
+
+            } else if (Character.isDigit(dateInString.charAt(0))) {
+                if (!Character.isDigit(dateInString.charAt(dateInString.indexOf(" at ") - 2))) {
+                    // 20 June at 10:55
+                    formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy H:mm", Locale.ENGLISH);
+                    dateInString = dateInString.replace("at", Year.now().toString());
+                    dateTime = LocalDateTime.parse(dateInString, formatter);
+                    dateInString = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Timestamp.valueOf(dateTime));
+                } else {
+                    // 20 June 2020 at 10:55
+                    formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm", Locale.ENGLISH);
+                    dateInString = dateInString.replace(" at ", " ");
+                    dateTime = LocalDateTime.parse(dateInString, formatter);
+                    dateInString = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Timestamp.valueOf(dateTime));
+                }
+            } else {
+                //May 13 at 3:23 PM
+                formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy h:mm a", Locale.ENGLISH);
+                dateInString = dateInString.replace(" at", ", " + Year.now());
+                dateTime = LocalDateTime.parse(dateInString, formatter);
+                dateInString = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Timestamp.valueOf(dateTime));
+            }
+        } else if (!Character.isDigit(dateInString.charAt(0))) {
+            if (dateInString.toLowerCase().contains("now") || dateInString.toLowerCase().contains("sec")) {
+                dateTime = LocalDateTime.now();
+                dateInString = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Timestamp.valueOf(dateTime));
+            } else if (dateInString.startsWith("on ")) {
+                //on Fri    -> fri on wk ago
+                date = LocalDate.now();
+                dateInString = dateInString.substring(dateInString.indexOf(' ') + 1);
+                while (!date.getDayOfWeek().toString().startsWith(dateInString.toUpperCase())) {
+                    date = date.minusDays(1);
+                }
+                dateInString = new SimpleDateFormat("yyyy-MM-dd 00:00").format(java.sql.Date.valueOf(date));
+            } else if (dateInString.startsWith("last")) {
+                //last Mon    last mon of month
+                date = LocalDate.now().minusWeeks(1);
+                dateInString = dateInString.substring(dateInString.indexOf(' ') + 1);
+                while (!date.getDayOfWeek().toString().contains(dateInString.toUpperCase()))
+                    date = date.plusDays(1);
+                dateInString = new SimpleDateFormat("yyyy-MM-dd 00:00").format(java.sql.Date.valueOf(date));
+            } else {
+                //March 18
+                formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
+                dateInString += ", " + Year.now();
+                date = LocalDate.parse(dateInString, formatter);
+                dateInString = new SimpleDateFormat("yyyy-MM-dd 00:00").format(java.sql.Date.valueOf(date));
+            }
+        } else if (Character.isDigit(dateInString.charAt(0))) {
+
+            if (dateInString.endsWith("m") || dateInString.contains("min")) {
+                //3m
+                dateTime = LocalDateTime.now();
+                dateTime = dateTime.minusMinutes(Integer.parseInt(dateInString.substring(0, dateInString.indexOf("m")).trim()));
+                dateInString = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Timestamp.valueOf(dateTime));
+            } else if (dateInString.endsWith("h") || dateInString.contains("hr") || dateInString.contains("hour")) {
+                //2h
+                dateTime = LocalDateTime.now();
+                dateTime = dateTime.minusHours(Integer.parseInt(dateInString.substring(0, dateInString.indexOf("h")).trim()));
+                dateInString = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(Timestamp.valueOf(dateTime));
+            } else if (dateInString.endsWith("d")) {
+                //4d
+                date = LocalDate.now();
+                date = date.minusDays(Integer.parseInt(dateInString.substring(0, dateInString.indexOf("d")).trim()));
+                dateInString = new SimpleDateFormat("yyyy-MM-dd HH:00").format(java.sql.Date.valueOf(date));
+            } else if (dateInString.endsWith("w") || dateInString.endsWith("wk") || dateInString.endsWith("wks") || dateInString.contains("week")) {
+                //5w
+                date = LocalDate.now();
+                date = date.minusWeeks(Integer.parseInt(dateInString.substring(0, dateInString.indexOf("w")).trim()));
+                dateInString = new SimpleDateFormat("yyyy-MM-dd 00:00").format(java.sql.Date.valueOf(date));
+            } else if (dateInString.contains("mo")) {
+                //2mon
+                date = LocalDate.now();
+                date = date.minusMonths(Integer.parseInt(dateInString.substring(0, dateInString.indexOf("mo")).trim()));
+                dateInString = new SimpleDateFormat("yyyy-MM-dd 00:00").format(java.sql.Date.valueOf(date));
+            } else if (dateInString.endsWith("y") || dateInString.contains("year")) {
+                //5y
+                date = LocalDate.now();
+                date = date.minusYears(Integer.parseInt(dateInString.substring(0, dateInString.indexOf("y")).trim()));
+                dateInString = new SimpleDateFormat("yyyy-MM-dd 00:00").format(java.sql.Date.valueOf(date));
+            }
+        } else {
+            throw new UnsupportedOperationException("not handle postDate: " + dateInString);
+        }
+        return dateInString;
     }
 }
