@@ -6,5 +6,5 @@ import vn.com.sociallistening.manager.entity.mariadb.CrawlProject;
 
 @Repository
 public interface CrawlProjectRepository extends JpaRepository<CrawlProject, Long> {
-
+    boolean existsByUrl(String url);
 }
